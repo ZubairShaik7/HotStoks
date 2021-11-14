@@ -80,22 +80,30 @@ const getStockData = async (userInput) => {
 const Chart = (searchTerm) => {
     getStockData("aapl")
     return (
-        <div style={{ height: 370, width:700 }}>
+        <div style={{ height: 400, width:800 }}>
             <ResponsiveLine
                 data={data3}
                 margin={{ top: 50, right: 160, bottom: 50, left: 60 }}
-                xScale={{ type: 'linear' }}
-                yScale={{ type: 'linear', stacked: true, min: 0, max: 300 }}
+                //xScale={{ type: 'linear' }}
+                //yScale={{ type: 'linear', stacked: true, min: 0, max: 300 }}
                 yFormat=" >-.2f"
                 curve="monotoneX"
                 enableGridX={false}
                 colors={{ scheme: 'purple_orange' }}
-                lineWidth={1}
+                lineWidth={4}
                 pointSize={6}
                 pointColor={{ theme: 'grid.line.stroke' }}
-                pointBorderWidth={1}
+                pointBorderWidth={3}
                 pointBorderColor={{ from: 'serieColor' }}
                 pointLabelYOffset={-12}
+                enableGridY={false}
+                enableGridX={false}
+                axisLeft={
+                    null
+                }
+                axisBottom={
+                    null
+                }
                 useMesh={true}
             />
         </div>
