@@ -11,9 +11,14 @@ const PriceCard = (props) => {
           </div>
           <div className="grid grid-cols-3">
             <div className="text-base font-bold mb-1">${props.price}</div>
-            <div className="col-span-2 flex flex-row space-x-2 justify-end">
-              <div className="text-base font-bold text-red-400">76%</div>
-              <div className="text-base font-bold text-green-400">+10%</div>
+            <div className="col-span-2 flex flex-row space-x-4 justify-end">
+              {props.sentiment < 0 ? (
+                <div className="text-base font-bold text-red-400">Bearish</div>
+              ) : (
+                <div className="text-base font-bold text-green-400">
+                  Bullish
+                </div>
+              )}
             </div>
           </div>
         </div>
