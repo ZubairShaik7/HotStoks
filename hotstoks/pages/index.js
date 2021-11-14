@@ -2,17 +2,106 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import PriceCard from "../components/PriceCard";
+import getPrice from "../components/getPriceData"
+import getSymbols from "../components/getSymbols";
 import Chart from "../components/chart"
 import "tailwindcss/tailwind.css";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+let data3 = [
+  {
+    "id": "japan",
+    "color": "hsl(219, 91%, 52%)",
+    "data": [
+      {
+        "x": 0,
+        "y": 270
+      },
+      {
+        "x": 1,
+        "y": 96
+      },
+      {
+        "x": 2,
+        "y": 14
+      },
+      {
+        "x": 3,
+        "y": 69
+      },
+      {
+        "x": 4,
+        "y": 125
+      },
+      {
+        "x": 5,
+        "y": 284
+      },
+      {
+        "x": 6,
+        "y": 79
+      },
+      {
+        "x": 7,
+        "y": 195
+      },
+      {
+        "x": 8,
+        "y": 191
+      },
+      {
+        "x": 9,
+        "y": 35
+      }
+    ]
+  }
+]
 
 export default function Home() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("aapl");
+  const [data, setData] = useState("data3")
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(async () => {
+    setIsLoading(true)
+    console.log(searchTerm)
+    console.log(await getSymbols(searchTerm))
+    await getStockData(searchTerm)
+    .catch(e => {
+      console.log(e)
+    })
+    setIsLoading(false)
+  }, [searchTerm])
+
+  const fillInData = (stockPrice) => {
+    const string = JSON.parse(stockPrice)
+    const dateArray = string.t
+    const priceArray = string.c
+    let i = 0;
+    for (i = 0; i < 10; i++) {
+        let d = dateArray[i] * 1000
+        let da = new Date(d).getMonth() + "/" + new Date(d).getDate()
+        dateArray[i] = da
+    }
+    i = 0;
+    data3[0].data.map((dataPoint) => {
+        dataPoint.x = dateArray[i];
+        dataPoint.y = priceArray[i];
+        i++;
+        //console.log(dataPoint.x + " " + dataPoint.y)
+    })
+    setData(data3)
+    //console.log(data)
+  }
+  
+  const getStockData = async () => {
+    const stockPrice = await getPrice(searchTerm)
+    fillInData(stockPrice)
+  }
 
   return (
     <div className="bg-gray-200 h-screen flex flex-col space-y-5">
-      {console.log(searchTerm)}
       <link
         href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
         rel="stylesheet"
@@ -54,7 +143,15 @@ export default function Home() {
           </div>
         </div>
         <div className="flex justify-center col-span-2 text-lg font-semibold text-gray-700">
-          <Chart searchTerm={"aapl"}></Chart>
+          {isLoading ? (
+            <>
+            <p>loading...</p>
+            </>
+          ) : (
+            <>
+            <Chart inputData={data} searchTerm={searchTerm}></Chart>
+            </>
+          )}
         </div>
       </div>
     </div>
