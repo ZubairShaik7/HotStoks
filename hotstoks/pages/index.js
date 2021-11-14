@@ -77,7 +77,6 @@ export default function Home() {
   useEffect(async () => {
     setIsLoading(true);
     setIsNewsLoading(true);
-    console.log(searchTerm);
     await getSymbols(searchTerm).catch((e) => {
       console.log(e);
     });
@@ -87,10 +86,11 @@ export default function Home() {
     await getStockData(searchTerm).catch((e) => {
       console.log(e);
     });
-    getStockPrice(searchTerm);
     setTimeout(() => {
-      setIsLoading(false);
-      if (stockNews === null) {
+      if (stockPrice !== 0) {
+        setIsLoading(false);
+      }
+      if (stockNews !== "") {
         setIsNewsLoading(false);
       }
     }, 1000);
@@ -127,7 +127,6 @@ export default function Home() {
     const data = await getNews(searchTerm);
     const string = JSON.parse(data);
     setStockNews(string.splice(0, 3)[0]);
-    console.log(stockNews);
   };
 
   const getStockData = async () => {
