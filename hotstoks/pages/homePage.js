@@ -1,4 +1,5 @@
 import { ResponsiveLine } from '@nivo/line'
+import "tailwindcss/tailwind.css"
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -289,12 +290,10 @@ const homePage = () => {
         </div>
     )
 }
+
 const MyResponsiveLine = ({ data /* see data tab */ }) => {
     return (
-        <div>
-            <p>
-                hello
-            </p>
+        <div style={{ height: 500 }}>
             <ResponsiveLine
                 data={data2}
                 margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
